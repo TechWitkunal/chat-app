@@ -2,6 +2,7 @@ const Messages = require("../models/messageModel");
 
 module.exports.getMessages = async (req, res, next) => {
   try {
+    // console.log(req.body);
     const { from, to } = req.body;
 
     const messages = await Messages.find({
@@ -11,9 +12,11 @@ module.exports.getMessages = async (req, res, next) => {
     }).sort({ updatedAt: 1 });
 
     const projectedMessages = messages.map((msg) => {
+      console.log(msg);
       return {
         fromSelf: msg.sender.toString() === from,
         message: msg.message.text,
+        updatedAt: msg.updatedAt,
       };
     });
     res.json(projectedMessages);

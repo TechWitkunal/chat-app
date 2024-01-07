@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
+import UpdateUserButton from "../components/UpdateUserButton"
 import styled from "styled-components";
 import Logo from "../assets/logo.svg";
+import { Tooltip } from 'react-tooltip'
+// import 'react-tooltip/dist/index.css';
+// import 'react-tooltip/dist/react-tooltip.css';
+import 'react-tooltip/dist/react-tooltip.css'
+
 
 export default function Contacts({ contacts, changeChat }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     const data = await JSON.parse(
       localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
@@ -43,6 +50,7 @@ export default function Contacts({ contacts, changeChat }) {
                   </div>
                   <div className="username">
                     <h3>{contact.username}</h3>
+                    {/* <UpdateUserButton></UpdateUserButton> */}
                   </div>
                 </div>
               );
@@ -57,6 +65,8 @@ export default function Contacts({ contacts, changeChat }) {
             </div>
             <div className="username">
               <h2>{currentUserName}</h2>
+              <UpdateUserButton data-tooltip-id="my-tooltip" data-tooltip-content="Hello to you too!"/>
+              <Tooltip id="my-tooltip" />
             </div>
           </div>
         </Container>
@@ -136,8 +146,11 @@ const Container = styled.div`
       }
     }
     .username {
+      display: flex;
+      align-items: center;
       h2 {
         color: white;
+        margin-right: 20px;
       }
     }
     @media screen and (min-width: 720px) and (max-width: 1080px) {

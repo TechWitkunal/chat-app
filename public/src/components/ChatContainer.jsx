@@ -6,11 +6,14 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { sendMessageRoute, recieveMessageRoute } from "../utils/APIRoutes";
 
+
 export default function ChatContainer({ currentChat, socket }) {
+
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     const data = await JSON.parse(
       localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
@@ -59,6 +62,7 @@ export default function ChatContainer({ currentChat, socket }) {
         setArrivalMessage({ fromSelf: false, message: msg });
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -68,6 +72,26 @@ export default function ChatContainer({ currentChat, socket }) {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+
+  const gettime = (fullTime, key) => {
+    let time = fullTime;
+    if (!fullTime.updatedAt) {
+      // if (!localStorage.getItem("message-time")) {localStorage.setItem("message-time", {})}
+      // let timeObject = localStorage.getItem("message-time")
+      // localStorage.setItem("message-time", JSON.stringify({...timeObject, Kunal: "qwertg"}))
+      const dateTime = new Date();
+      const minutes = dateTime.getMinutes();
+      const seconds = dateTime.getSeconds();
+      return `${minutes} : ${seconds}`
+    }
+    // console.log(new Date());
+    const dateTime = new Date(time.updatedAt);
+    const minutes = dateTime.getMinutes();
+    const seconds = dateTime.getSeconds();
+    return `${minutes} : ${seconds}`
+    // return ;
+  }
 
   return (
     <Container>
@@ -87,15 +111,16 @@ export default function ChatContainer({ currentChat, socket }) {
       </div>
       <div className="chat-messages">
         {messages.map((message) => {
+          const key = uuidv4();
           return (
-            <div ref={scrollRef} key={uuidv4()}>
+            <div ref={scrollRef} key={key}>
               <div
-                className={`message ${
-                  message.fromSelf ? "sended" : "recieved"
-                }`}
+                className={`message ${message.fromSelf ? "sended" : "recieved"
+                  }`}
               >
                 <div className="content ">
                   <p>{message.message}</p>
+                  <p className="time">{gettime(message, key)}</p>
                 </div>
               </div>
             </div>
@@ -156,10 +181,20 @@ const Container = styled.div`
       .content {
         max-width: 40%;
         overflow-wrap: break-word;
+        position: relative;
         padding: 1rem;
         font-size: 1.1rem;
         border-radius: 1rem;
         color: #d1d1d1;
+        .time {
+          position: absolute;
+          bottom: -10px;
+          right: -10px;
+          border-radius: 10px;
+          font-size: 14px;
+          background-color: black;
+          padding: 0.5em 0.5em;
+        }
         @media screen and (min-width: 720px) and (max-width: 1080px) {
           max-width: 70%;
         }

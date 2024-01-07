@@ -3,8 +3,17 @@ import { BsEmojiSmileFill } from "react-icons/bs";
 import { IoMdSend } from "react-icons/io";
 import styled from "styled-components";
 import Picker from "emoji-picker-react";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function ChatInput({ handleSendMsg }) {
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 8000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
+
   const [msg, setMsg] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const handleEmojiPickerhideShow = () => {
@@ -19,7 +28,9 @@ export default function ChatInput({ handleSendMsg }) {
 
   const sendChat = (event) => {
     event.preventDefault();
-    if (msg.length > 0) {
+    if (msg.trim().length <= 0) {
+      toast.error("Please enter something", toastOptions);
+    } else {
       handleSendMsg(msg);
       setMsg("");
     }
@@ -44,6 +55,7 @@ export default function ChatInput({ handleSendMsg }) {
           <IoMdSend />
         </button>
       </form>
+      <ToastContainer></ToastContainer>
     </Container>
   );
 }

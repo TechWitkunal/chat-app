@@ -14,6 +14,7 @@ export default function Chat() {
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
       navigate("/login");
@@ -24,6 +25,7 @@ export default function Chat() {
         )
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     if (currentUser) {
@@ -32,6 +34,7 @@ export default function Chat() {
     }
   }, [currentUser]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     if (currentUser) {
       if (currentUser.isAvatarImageSet) {
@@ -41,7 +44,9 @@ export default function Chat() {
         navigate("/setAvatar");
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
+
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   };

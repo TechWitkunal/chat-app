@@ -27,6 +27,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  isOnline: {
+    type: Boolean,
+    required: true,
+  }, 
+  friends: {
+    type: Array,
+    default: []
+  }
 });
 
 module.exports = mongoose.model("Users", userSchema);
